@@ -1,6 +1,6 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Homework #1 ECON 512                                    %
-% Written by Joonkyo (Jay) Hong, 22 Aug 2018              %
+% Written by Joonkyo (Jay) Hong, 31 Aug 2018              %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %% Problem 1.
@@ -19,6 +19,7 @@ xlabel("X");
 vec_problem2 = linspace(-10,20,200);
 vec_problem2 = vec_problem2';
 ans_problem2 = sum(vec_problem2);
+ans_problem2
 
 %% Problem 3
 
@@ -27,24 +28,28 @@ A = [2 4 6;
      3 12 4];
 b = [-2;3;10];
 
-C = A'*b;
-D = (A'*A)\b;
-E = b'*A*[1;1;1];   % E is computed like this %
+C = A'*b
+D = (A'*A)\b
+E = b'*A*[1;1;1]
 F = A;
 F(:,3)=[];
 F(2,:)=[];
-x = A\b;
+F
+x = A\b
 
 %% Problem 4
 
-B = kron(eye(5),A);
+B = kron(eye(5),A)
 
 %% Problem 5
 
+rng(2);
 matrix_problem5 = normrnd(10,5,5,3);
 ans_problem5 = matrix_problem5;
 ans_problem5(ans_problem5<10)=0;
 ans_problem5(ans_problem5>=10)=1;
+ans_problem5
+
 
 %% Problem 6
 
@@ -59,7 +64,6 @@ emat = ymat-xmat*ols_est;
 wave = 4;
 obs= length(ymat)/4;
 center_sand = zeros(k,k);
-
 for i=1:obs
     ei = emat((i-1)*wave+1:i*wave,1); xi = xmat((i-1)*wave+1:i*wave,:);
     center_sand = center_sand + xi'*ei*ei'*xi;
