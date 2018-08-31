@@ -29,7 +29,7 @@ b = [-2;3;10];
 
 C = A'*b;
 D = (A'*A)\b;
-E = b'*A*[1;1;1];
+E = b'*A*[1;1;1];   % E is computed like this %
 F = A;
 F(:,3)=[];
 F(2,:)=[];
