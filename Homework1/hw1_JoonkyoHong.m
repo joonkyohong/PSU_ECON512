@@ -53,6 +53,8 @@ ans_problem5
 
 %% Problem 6
 
+% csvread replaces NaNs with zeros, it creates small disturbance, you
+% should have used other reader of data. see answer key
 dataset = csvread('datahw1.csv',0,0);
 
 ymat = (dataset(:,5));
