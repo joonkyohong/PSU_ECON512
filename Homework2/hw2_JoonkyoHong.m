@@ -14,12 +14,16 @@ demand = exp(v-p)./(1+sum(exp(v-p)));
 disp('D_A         D_B')
 disp(num2str(demand'));
 disp("Question 1 is done. Press any key to continue");
-pause
+% pause
 %% Question 2
 
 f = @(p) bertrand(p,v); %make function handle whose argument is a price vector
                         %Bertrand is an outside function that characterize
                         %equilibrium conditions
+                        
+%                         I like your codding style, it is easy to read.
+%                         try to use unctions more to reduce text load on main
+%                         program
 
 % START BROYDEN METHODS
 
@@ -56,7 +60,7 @@ disp(num2str(p'));
 disp("Computation Time")
 disp(num2str(t));
 disp("Question 2 is done. Press any key to continue");
-pause
+% pause
 
 %% Question 3
 
@@ -125,7 +129,7 @@ disp(num2str([pa pb]));
 disp("Computation Time")
 disp(num2str(t));
 disp("Question 3 is done. Press any key to continue");
-pause
+% pause
 %% Question 4
 
 % Updating Rule
@@ -140,6 +144,7 @@ tic
  for i=1:maxit
      nextp = g(p);
      diff = norm(nextp-p);
+%      no need to do printing on each iteration, it clogs output.
      fprintf('iter %d: p(1) = %f, p(2) = %f, norm(f(x)) = %.8f\n',i, p(1), p(2), diff);
       if diff < 10e-8
           break;
@@ -187,7 +192,7 @@ disp("Computation Time")
 disp(num2str(t2));
 disp("Question 4 is done. Press any key to continue");
 
-pause
+% pause
 %% Question 5
 
 vb_vec = 0:0.2:3;                        % vector of values 
