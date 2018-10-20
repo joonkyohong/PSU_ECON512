@@ -1,0 +1,280 @@
+\documentclass[10pt, letterpaper]{article}
+
+\usepackage{amssymb,amsmath,amsfonts,eurosym,geometry,ulem,graphicx,caption,color,setspace,sectsty,comment,footmisc,caption,natbib,pdflscape,subfigure,array,hyperref}
+\usepackage{xcolor}
+\usepackage{mathptmx}
+\usepackage{listings}
+\lstset{language=Matlab}
+\hypersetup{
+    colorlinks,
+    linkcolor={red!50!black},
+    citecolor={blue!50!black},
+    urlcolor={blue!80!black}
+}
+\normalem
+\usepackage[flushleft]{threeparttable}
+    
+\onehalfspacing
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{proposition}{Proposition}
+\newenvironment{proof}[1][Proof]{\noindent\textbf{#1.} }{\ \rule{0.5em}{0.5em}}
+
+\newtheorem{hyp}{Hypothesis}
+\newtheorem{subhyp}{Hypothesis}[hyp]
+\newtheorem{asu}{Assumption}
+\renewcommand{\thesubhyp}{\thehyp\alph{subhyp}}
+
+\newcommand{\red}[1]{{\color{red} #1}}
+\newcommand{\blue}[1]{{\color{blue} #1}}
+
+\newcolumntype{L}[1]{>{\raggedright\let\newline\\arraybackslash\hspace{0pt}}m{#1}}
+\newcolumntype{C}[1]{>{\centering\let\newline\\arraybackslash\hspace{0pt}}m{#1}}
+\newcolumntype{R}[1]{>{\raggedleft\let\newline\\arraybackslash\hspace{0pt}}m{#1}}
+
+\geometry{left=1.0in,right=1.0in,top=1.0in,bottom=1.0in}
+
+\begin{document}
+
+\title{Homework 4: ECON512}
+\author{Joonkyo Hong}
+\date{}
+\maketitle
+\smallskip
+
+\noindent For question 1 to 4, I use 100 draws (or nodes) to approximate $\pi$.
+
+~\\
+
+\noindent Q1. (Quasi Monte Carlo with Dart Throwing: q-MC with DT)
+
+\begin{enumerate}
+\item Draw $\{ x_{i}, y_{j} \}_{i=1 ~ j=1}^{100 ~ 100}$ from \texttt{qnwequi}
+ over $[0,1] \times [0,1]$.
+\item Compute 
+   \begin{equation}
+    z_{ij}
+    \begin{cases}
+      1, & \text{if}\ x_{i}^{2} + y_{j}^{2} \leq 1 \nonumber \\
+      0, & \text{otherwise}
+    \end{cases}
+  \end{equation} 
+\item Approximate $\frac{\pi}{4}$ as $\frac{\#~\text{of}~z_{ij}=1}{100 \times 100}$
+\end{enumerate}
+
+
+\noindent Q2. (Newton-Cotes with Dart Throwing: NC with DT)
+
+\begin{enumerate}
+\item Create grids $\{ x_{i}, y_{j} \}_{i=0 ~ j=0}^{100 ~ 100}$ where $x_{i} = \frac{i}{100}$ and $y_{j} = \frac{j}{100}$.
+\item Create the matrix $Z$ whose $(i,j)$-th element is 
+   \begin{equation}
+    z_{ij}
+    \begin{cases}
+      1, & \text{if}\ x_{i}^{2} + y_{j}^{2} \leq 1 \nonumber \\
+      0, & \text{otherwise}
+    \end{cases}
+  \end{equation} 
+\item Following Simpson, create the 101 by 1 weight vector $w$ as
+   \begin{align}
+    &  w_{0}=w_{101} = \frac{0.01}{3} \nonumber \\    
+    &  w_{k} = 
+    \begin{cases}
+      \frac{4}{3} \times 0.01, & \text{if $k$ is even} \nonumber \\
+      \frac{2}{3} \times 0.01, & \text{if $k$ is odd}
+    \end{cases}
+  \end{align} 
+\item Approximate $\frac{\pi}{4}$ as $w'Zw$
+\end{enumerate}
+
+
+
+\noindent Q3. (Quasi Monte Carlo with Pythagorean formula: q-MC with PYT)
+
+\begin{enumerate}
+\item Draw $\{ x_{i}\}_{i=1}^{100}$ from \texttt{qnwequi}
+\item Approximate $\frac{\pi}{4}$ as $\frac{1}{100}\sum_{i=1}^{100}\sqrt{1-x_{i}^{2}}$
+\end{enumerate}
+
+\newpage
+
+\noindent Q4. (Newton-Cotes with Pythagorean formula: NC with PYT)
+
+\begin{enumerate}
+\item Create grids $\{ x_{i} \}_{i=0 ~ j=0}^{100}$ where $x_{i} = \frac{i}{100}$.
+\item Create the vector $f$ whose $i$-th element is 
+   \begin{equation}
+    f_{i}=\sqrt{1-x_{i}^{2}} \nonumber
+  \end{equation} 
+\item Following Simpson, create the 101 by 1 weight vector $w$ as
+   \begin{align}
+    &  w_{0}=w_{101} = \frac{0.01}{3} \nonumber \\    
+    &  w_{k} = 
+    \begin{cases}
+      \frac{4}{3} \times 0.01, & \text{if $k$ is even} \nonumber \\
+      \frac{2}{3} \times 0.01, & \text{if $k$ is odd}
+    \end{cases}
+  \end{align} 
+\item Approximate $\frac{\pi}{4}$ as $w'f$
+\end{enumerate}
+
+Here are the approximated $\pi$'s and the relevant absolute errors to the true $\pi$.
+\begin{table}[h!]
+  \begin{center}
+    \caption{Approximated $\pi$}  
+    \label{tab:estimate}
+    \begin{tabular}{c|c|c} % <-- Alignments: 1st column left, 2nd middle and 3rd right, with vertical lines in between
+      \hline\hline
+       Method                & Approx. $\pi$     &   Abs. Error    \\
+      \hline
+       q-MC with DT          & 3.1513           &  0.0304          \\
+       NC with DT            & 3.1425           &  0.0009         \\ 
+       q-MC with PYT         & 3.1387           &  0.0104          \\
+       NC with PYT           & 3.1416           &  0.0005          \\ 
+      \hline      \hline
+    \end{tabular}
+  \end{center}
+\end{table} 
+
+
+
+
+\noindent Q5. 
+
+\noindent I randomize Quasi Monte Carlo by doing so:
+
+For each simulation, 
+\begin{enumerate}
+\item Draw $\{x_{i}\}_{i}^{N}$ from \texttt{qnwequi}
+ over $[0,1]$.
+\item Draw $U_{i} \sim i.i.d. Unif(0,1)$, $i=1,\hdots,100$ and create $y_{i} = \mod(x_{i}+U_{i},1)$.
+\item Conduct the quasi-Monte Carlo method with $\{ y_{i} \}_{i}^{N}$.  
+\end{enumerate}
+
+Here are the Mean Squared errors for each methods with draws (grids) 1,000, 5,000, and 10,000, respectively (For Newton-Cotes, the reported values are squared error).
+
+\begin{table}[h!]
+  \begin{center}
+    \caption{Approximated $\pi$}  
+    \label{tab:estimate}
+    \begin{tabular}{c|c|c|c} % <-- Alignments: 1st column left, 2nd middle and 3rd right, with vertical lines in between
+      \hline\hline
+       Method                & N=1,000         &  N=5,000       &  N=10,000  \\
+      \hline
+       q-MC with DT          & 0.0016           &  0.0003       &  0.0002     \\
+       NC with DT            & 1.127e-09        &  1.705e-11    &  8.551e-13    \\ 
+       q-MC with PYT         & 0.0007           &  0.0001       &  8.477e-05  \\
+       NC with PYT           & 2.109e-10        &  1.687e-12    &  2.109e-13 \\ 
+      \hline      \hline
+    \end{tabular}
+  \end{center}
+\end{table} 
+
+Overall, Newton-Cotes with Pythagorean outperforms all the other methods in terms of squared errors. 
+\clearpage
+
+\begin{verbatim}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Homework #4 ECON 512                                    %
+% Written by Joonkyo (Jay) Hong, 20 Oct 2018              %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+clear;
+
+addpath('./CEtools/');   % First, add path CEtools %
+N = 100;                 % # of draws or nodes 
+
+%% Questions 1 (Dart-throwing method with quasi-MC approach)
+
+     [x1, ~]= qnwequi(N, [0 0], [1 1]);
+     z   =  indic_fcn(x1(:,1),x1(:,2));
+     
+     pi1 =  4*mean(mean(z));
+     error1 = abs(pi1 - pi);
+     
+%% Question 2 (Dart-throwing method with Newton-Coates approach)
+ 
+     pi2 = 4*Int_indic([0 0],[1 1],N,N);     
+     error2 = abs(pi2 - pi);
+
+%% Questions 3 (Pythagorean method with quasi-MC approach)
+
+     [x3, ~]  = qnwequi(N,0,1);
+     pi3 = 4*mean(sqrt(1-x3.^2));
+     error3 = abs(pi3 - pi);
+     
+%% Questions 4 (Pythagorean method with Newton-Coates approach)
+
+     pi4 = 4*Int_simp(@(x) sqrt(1-x.^2), 0, 1, N);
+     error4 = abs(pi4 - pi);
+     
+     
+ result_from_1_to_4 =  ...
+  [" ",           "approximate pi", "absolute error";
+   "q-MC with DT",     pi1,               error1      ;
+   "NC with DT"  ,     pi2,               error2      ;
+   "q-MC with PYT",    pi3,               error3      ;
+   "NC with PYT" ,     pi4,               error4      ];
+%% Question 5 (Randomizing quasi-MC)
+
+N       = [1000; 5000; 10000]; 
+num_sim = 200;                   % # of simulations
+store_array = zeros(2,length(N),num_sim);  % 3D-array that will store the Squared errors
+
+
+for n=1:length(N)   
+            
+    [x1, ~]  = qnwequi(N(n), [0 0], [1 1]);
+    [x3, ~]  = qnwequi(N(n),0,1);
+
+    for i=1:num_sim
+        
+        % Dart-Throwing with q-MC
+        
+          y1 = mod(x1+rand(N(n),2),1);    % Randomizing q-MC 
+         
+          z   =  indic_fcn(y1(:,1),y1(:,2));
+          pi1 =  4*mean(mean(z));
+          store_array(1,n,i) = (pi1 - pi)^2;        
+                    
+          % Pythagorean with q-MC
+        
+          y3 = mod(x3+rand(N(n),1),1);     % Randomizing q-MC 
+         
+          pi3 = 4*mean(sqrt(1-y3.^2));
+          store_array(3,n,i) = (pi3 - pi)^2;
+          
+    end
+    
+          % Dart-Throwing with Newton-Cotes
+           
+          pi2 = 4*Int_indic([0 0],[1 1],N(n),N(n));     
+          store_array(2,n,:) = (pi2 - pi)^2;
+          
+          % Pythagorean with Newton-Cotes
+
+          pi4 = 4*Int_simp(@(x) sqrt(1-x.^2), 0, 1, N(n));
+          store_array(4,n,:) = (pi4-pi)^2;
+          
+          
+end
+
+
+
+                   
+results_mat = mean(store_array,3);   % Calculate mean over the simulations
+results_mat= [[" ", "N=1,000", "N=5,000", "N=10,000"];
+ ["q-MC with DT"; "NC with DT"; "q-MC with PYT"; "q-MC with PYT"], (results_mat)];
+
+disp(" ");
+disp(" ");
+disp("Question 1~4. Approximated pi and abs error: N=100");
+disp(result_from_1_to_4);
+
+disp(" ");
+disp("Question 5. Mean Squared Errors");
+disp(results_mat);
+
+\end{verbatim}
+                     
+
+\end{document}
