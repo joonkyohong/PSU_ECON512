@@ -141,17 +141,9 @@ Here are the approximated $\pi$'s and the relevant absolute errors to the true $
 
 \noindent Q5. 
 
-\noindent I randomize Quasi Monte Carlo by doing so:
+\noindent To conduct pseudo Monte Carlo, I draw uniform random variables at each simulation.  
 
-For each simulation, 
-\begin{enumerate}
-\item Draw $\{x_{i}\}_{i}^{N}$ from \texttt{qnwequi}
- over $[0,1]$.
-\item Draw $U_{i} \sim i.i.d. Unif(0,1)$, $i=1,\hdots,100$ and create $y_{i} = \mod(x_{i}+U_{i},1)$.
-\item Conduct the quasi-Monte Carlo method with $\{ y_{i} \}_{i}^{N}$.  
-\end{enumerate}
-
-Here are the Mean Squared errors for each methods with draws (grids) 1,000, 5,000, and 10,000, respectively (For Newton-Cotes, the reported values are squared error).
+Here are the Mean Squared errors for each methods with draws (grids) 100, 1,000, and 10,000, respectively (For Newton-Cotes, the reported values are squared error).
 
 \begin{table}[h!]
   \begin{center}
@@ -159,24 +151,26 @@ Here are the Mean Squared errors for each methods with draws (grids) 1,000, 5,00
     \label{tab:estimate}
     \begin{tabular}{c|c|c|c} % <-- Alignments: 1st column left, 2nd middle and 3rd right, with vertical lines in between
       \hline\hline
-       Method                & N=1,000         &  N=5,000       &  N=10,000  \\
+       Method                & N=100           &  N=1,000       &  N=10,000  \\
       \hline
-       q-MC with DT          & 0.0016           &  0.0003       &  0.0002     \\
-       NC with DT            & 1.127e-09        &  1.705e-11    &  8.551e-13    \\ 
-       q-MC with PYT         & 0.0007           &  0.0001       &  8.477e-05  \\
-       NC with PYT           & 2.109e-10        &  1.687e-12    &  2.109e-13 \\ 
+       pseudo MC with DT     & 0.0015           &  0.0002       &  0.0001     \\
+       NC with DT            & 8.849e-07        &  1.127e-09    &  8.551e-13    \\ 
+       pseudo MC with PYT    & 0.0079           &  0.0007       &  7.081e-05  \\
+       NC with PYT           & 2.111e-07        &  2.109e-10    &  2.109e-13 \\ 
       \hline      \hline
     \end{tabular}
   \end{center}
 \end{table} 
 
-Overall, Newton-Cotes with Pythagorean outperforms all the other methods in terms of squared errors. 
+Note that with small number of draws, pseudo Monte Carlo methods are showing poor performance in approximating $\pi$. In particular, the pseudo-MC with Dart Throwing approach is the worst way to compute $\pi$. Overall, Newton-Cotes with Pythagorean approach outperforms all the other methods in terms of squared errors. 
+
 \clearpage
 
 \begin{verbatim}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Homework #4 ECON 512                                    %
 % Written by Joonkyo (Jay) Hong, 20 Oct 2018              %
+% Modified on 22 Oct 2018                                 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 clear;
 
@@ -214,33 +208,30 @@ N = 100;                 % # of draws or nodes
    "NC with DT"  ,     pi2,               error2      ;
    "q-MC with PYT",    pi3,               error3      ;
    "NC with PYT" ,     pi4,               error4      ];
-%% Question 5 (Randomizing quasi-MC)
+%% Question 5 (Pseudo-MC)
 
-N       = [1000; 5000; 10000]; 
+N       = [100; 1000; 10000]; 
 num_sim = 200;                   % # of simulations
 store_array = zeros(2,length(N),num_sim);  % 3D-array that will store the Squared errors
 
 
 for n=1:length(N)   
             
-    [x1, ~]  = qnwequi(N(n), [0 0], [1 1]);
-    [x3, ~]  = qnwequi(N(n),0,1);
-
     for i=1:num_sim
         
-        % Dart-Throwing with q-MC
+          % Dart-Throwing with Pseudo-MC
         
-          y1 = mod(x1+rand(N(n),2),1);    % Randomizing q-MC 
+          x1 = rand(N(n),2);    % Pseudo-MC 
          
-          z   =  indic_fcn(y1(:,1),y1(:,2));
+          z   =  indic_fcn(x1(:,1),x1(:,2));
           pi1 =  4*mean(mean(z));
           store_array(1,n,i) = (pi1 - pi)^2;        
                     
-          % Pythagorean with q-MC
+          % Pythagorean with Pseudo-MC
         
-          y3 = mod(x3+rand(N(n),1),1);     % Randomizing q-MC 
+          x3 = rand(N(n),1);    % Pseudo-MC 
          
-          pi3 = 4*mean(sqrt(1-y3.^2));
+          pi3 = 4*mean(sqrt(1-x3.^2));
           store_array(3,n,i) = (pi3 - pi)^2;
           
     end
@@ -262,8 +253,8 @@ end
 
                    
 results_mat = mean(store_array,3);   % Calculate mean over the simulations
-results_mat= [[" ", "N=1,000", "N=5,000", "N=10,000"];
- ["q-MC with DT"; "NC with DT"; "q-MC with PYT"; "q-MC with PYT"], (results_mat)];
+results_mat= [[" ", "N=100", "N=1,000", "N=10,000"];
+ ["pseudo-MC with DT"; "NC with DT"; "pseudo-MC with PYT"; "q-MC with PYT"], (results_mat)];
 
 disp(" ");
 disp(" ");
