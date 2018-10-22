@@ -1,6 +1,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Homework #4 ECON 512                                    %
 % Written by Joonkyo (Jay) Hong, 20 Oct 2018              %
+% Modified on 22 Oct 2018                                 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 clear;
 
@@ -38,33 +39,30 @@ N = 100;                 % # of draws or nodes
    "NC with DT"  ,     pi2,               error2      ;
    "q-MC with PYT",    pi3,               error3      ;
    "NC with PYT" ,     pi4,               error4      ];
-%% Question 5 (Randomizing quasi-MC)
+%% Question 5 (Pseudo-MC)
 
-N       = [1000; 5000; 10000]; 
+N       = [100; 1000; 10000]; 
 num_sim = 200;                   % # of simulations
 store_array = zeros(2,length(N),num_sim);  % 3D-array that will store the Squared errors
 
 
 for n=1:length(N)   
             
-    [x1, ~]  = qnwequi(N(n), [0 0], [1 1]);
-    [x3, ~]  = qnwequi(N(n),0,1);
-
     for i=1:num_sim
         
-        % Dart-Throwing with q-MC
+          % Dart-Throwing with Pseudo-MC
         
-          y1 = mod(x1+rand(N(n),2),1);    % Randomizing q-MC 
+          x1 = rand(N(n),2);    % Pseudo-MC 
          
-          z   =  indic_fcn(y1(:,1),y1(:,2));
+          z   =  indic_fcn(x1(:,1),x1(:,2));
           pi1 =  4*mean(mean(z));
           store_array(1,n,i) = (pi1 - pi)^2;        
                     
-          % Pythagorean with q-MC
+          % Pythagorean with Pseudo-MC
         
-          y3 = mod(x3+rand(N(n),1),1);     % Randomizing q-MC 
+          x3 = rand(N(n),1);    % Pseudo-MC 
          
-          pi3 = 4*mean(sqrt(1-y3.^2));
+          pi3 = 4*mean(sqrt(1-x3.^2));
           store_array(3,n,i) = (pi3 - pi)^2;
           
     end
@@ -86,8 +84,8 @@ end
 
                    
 results_mat = mean(store_array,3);   % Calculate mean over the simulations
-results_mat= [[" ", "N=1,000", "N=5,000", "N=10,000"];
- ["q-MC with DT"; "NC with DT"; "q-MC with PYT"; "q-MC with PYT"], (results_mat)];
+results_mat= [[" ", "N=100", "N=1,000", "N=10,000"];
+ ["pseudo-MC with DT"; "NC with DT"; "pseudo-MC with PYT"; "q-MC with PYT"], (results_mat)];
 
 disp(" ");
 disp(" ");
