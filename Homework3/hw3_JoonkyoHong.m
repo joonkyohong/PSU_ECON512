@@ -1,3 +1,6 @@
+
+% Great  job,  I like your style
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Homework #3 ECON 512                                    %
 % Written by Joonkyo (Jay) Hong, 4 Oct 2018               %
