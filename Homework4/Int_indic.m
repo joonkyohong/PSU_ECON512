@@ -25,6 +25,7 @@ function [ returnVal ] = Int_indic(a, b, Nx, Ny)
     end
 
     %Setup Grid: 
+%     I am not sure this is the right grid, check the answer key
     hx = (b(1) - a(1))/Nx;
     X = a(1):hx:b(1);
     
