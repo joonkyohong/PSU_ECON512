@@ -43,7 +43,7 @@ Y = repmat(y,1,k);
 w = repmat(gamma*z,1,k)+kron(beta,x)+repmat(u,nt,1);
 phi = exp(w)./(1+exp(w));
 phi = reshape(prod(reshape(phi.^Y.*(1-phi).^(1-Y),20,[])),100,[]);
-neglik = -sum(log(phi*ones(length(phi),1)));
+neglik = -sum(log(mean(phi,2)));
 
 end
 
