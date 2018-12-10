@@ -70,6 +70,8 @@ init_theta2 = [init_theta2(2:3,1)' init_theta2(1,1) 1 1 0];
 
    tic
    [theta_mle2,fval2,exitflag2,~] = fmincon(lik_fcn2,init_theta,[],[],[],[],lb,ub,[],options_opt);
+%    take a look at answer key to see how you can use unconstrained MLE
+%    with constraints imposed by fmincon
    time2 = toc;
 
 
