@@ -2,7 +2,7 @@
 % Written by Joonkyo Hong
 % Build upon stochgrow.m in ECON512 lecture
 % Jan 23, 2019
-
+% All is good, check plus
 
 %% Section 1. Solve for Value functions
 

@@ -2,7 +2,7 @@
 % Written by Joonkyo Hong
 % Build upon codes contained in code_QLD in ECON512 lecture
 % Feb 16, 2019
-
+% all is good, check plus
 clear;
 
 %% Question 1. Solve for the equilbrium through policy and value function iteration
